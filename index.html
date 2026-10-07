@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Регулярные списания · концепт для СберБанк Онлайн</title>
+<meta name="description" content="Концепт экрана «Регулярные списания» для СберБанк Онлайн. UX/UI: Максим Кощеев. Не связан с ПАО Сбербанк.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Токены, восстановленные по публичным материалам СберБанк Онлайн */
+  --color-primary:#21A038;
+  --color-primary-hover:#1C8B31;
+  --color-primary-bg-subtle:rgba(33,160,56,.10);
+  --color-primary-bg-soft:rgba(33,160,56,.06);
+  --color-bg-page:#F2F3F5;
+  --color-bg-card:#FFFFFF;
+  --color-bg-field:#F2F3F5;
+  --color-bg-muted:#E9EBEE;
+  --color-text-primary:#1F1F22;
+  --color-text-secondary:#7D838A;
+  --color-text-tertiary:#A6ABB1;
+  --color-danger:#E5342B;
+  --color-danger-bg:rgba(229,52,43,.10);
+  --color-warning-bg:#FEF4C2;
+  --color-warning-text:#7A5B00;
+  --color-info:#1A88E1;
+  --color-info-bg:rgba(26,136,225,.10);
+  --divider:rgba(31,31,34,.07);
+  --shadow-card:0 8px 8px rgba(31,31,34,.03);
+  --shadow-float:0 12px 32px rgba(31,31,34,.14);
+  --r-card:24px;--r-block:20px;--r-inner:14px;--r-pill:1000px;
+  --font:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--color-bg-page)}
+body{font-family:var(--font);color:var(--color-text-primary);font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- Shell ---------- */
+.topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.topbar-in{max-width:1320px;margin:0 auto;height:64px;display:flex;align-items:center;gap:24px;padding:0 24px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.01em;white-space:nowrap}
+.brand-dot{width:28px;height:28px;border-radius:50%;background:conic-gradient(from 200deg,#F2E913,#42E3B4,#21A038,#0091EA,#F2E913)}
+.concept-tag{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--color-primary);background:var(--color-primary-bg-subtle);padding:4px 10px;border-radius:var(--r-pill)}
+.search{flex:1;max-width:420px;height:40px;border-radius:var(--r-pill);background:var(--color-bg-field);display:flex;align-items:center;gap:8px;padding:0 16px;color:var(--color-text-secondary);font-size:14px}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:12px}
+.icon-btn{width:40px;height:40px;border-radius:50%;background:var(--color-bg-field);display:grid;place-items:center}
+.avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#B7E4C2,#21A038);color:#fff;font-weight:700;display:grid;place-items:center;font-size:14px}
+.about-btn{height:40px;padding:0 16px;border-radius:var(--r-pill);background:var(--color-primary-bg-subtle);color:var(--color-primary);font-weight:600;font-size:14px;white-space:nowrap}
+
+.layout{max-width:1320px;margin:0 auto;padding:24px;display:grid;grid-template-columns:220px minmax(0,1fr) 360px;gap:24px;align-items:start}
+.sidenav{position:sticky;top:88px;display:flex;flex-direction:column;gap:4px}
+.sidenav a{display:flex;align-items:center;gap:12px;height:44px;padding:0 14px;border-radius:var(--r-inner);color:var(--color-text-primary);text-decoration:none;font-weight:500;font-size:15px}
+.sidenav a:hover{background:rgba(31,31,34,.04)}
+.sidenav a.active{background:var(--color-bg-card);color:var(--color-primary);font-weight:600;box-shadow:var(--shadow-card)}
+.sidenav svg{width:22px;height:22px;flex:none}
+
+.crumbs{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--color-text-secondary);margin-bottom:12px}
+.crumbs a{color:var(--color-text-secondary);text-decoration:none}
+.crumbs .back{width:32px;height:32px;border-radius:50%;background:var(--color-bg-card);display:grid;place-items:center;margin-right:4px}
+h1{font-size:32px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin-bottom:20px}
+
+/* ---------- Hero summary ---------- */
+.hero{position:relative;overflow:hidden;background:var(--color-bg-card);border-radius:var(--r-card);padding:28px 28px 24px;box-shadow:var(--shadow-card);margin-bottom:16px;min-height:220px}
+.hero-label{font-size:14px;color:var(--color-text-secondary);margin-bottom:6px}
+.hero-sum{font-size:44px;line-height:1.05;font-weight:800;letter-spacing:-.03em}
+.hero-sum small{font-size:20px;font-weight:600;color:var(--color-text-secondary);letter-spacing:0}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;max-width:420px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:var(--r-pill);background:var(--color-bg-field);font-size:13px;font-weight:500;white-space:nowrap}
+.chip.green{background:var(--color-primary-bg-subtle);color:#167A2A}
+.chip.warn{background:var(--color-warning-bg);color:var(--color-warning-text)}
+.hero-ill{position:absolute;right:-24px;top:-10px;width:300px;height:250px;pointer-events:none}
+.hero-next{position:relative;margin-top:20px;display:flex;align-items:center;gap:12px;background:var(--color-bg-field);border-radius:var(--r-block);padding:12px 14px;max-width:400px}
+.hero-next b{font-weight:600}
+
+/* ---------- Banners ---------- */
+.banner{display:flex;gap:14px;align-items:flex-start;border-radius:var(--r-block);padding:16px 18px;margin-bottom:12px}
+.banner.green{background:linear-gradient(100deg,rgba(33,160,56,.14),rgba(33,160,56,.04))}
+.banner.warn{background:var(--color-warning-bg)}
+.banner-ico{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;flex:none}
+.banner-body{flex:1;min-width:0}
+.banner-title{font-weight:700;font-size:15px;margin-bottom:2px}
+.banner-text{font-size:14px;color:#3A3D42}
+.banner-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.banner-close{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:var(--color-text-secondary);flex:none}
+.banner-close:hover{background:rgba(31,31,34,.06)}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:var(--r-pill);font-weight:600;font-size:15px;white-space:nowrap;transition:background .15s,transform .1s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--color-primary);color:#fff}
+.btn-primary:hover{background:var(--color-primary-hover)}
+.btn-secondary{background:var(--color-bg-card);color:var(--color-text-primary)}
+.btn-secondary:hover{background:#FAFAFB}
+.btn-tint{background:var(--color-bg-field)}
+.btn-tint:hover{background:var(--color-bg-muted)}
+.btn-danger{background:var(--color-danger-bg);color:var(--color-danger)}
+.btn-danger:hover{background:rgba(229,52,43,.16)}
+.btn-s{height:36px;padding:0 16px;font-size:14px}
+.btn-block{width:100%;height:52px}
+
+/* ---------- Tabs ---------- */
+.tabs{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:20px 0 12px;padding-bottom:2px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{height:40px;padding:0 16px;border-radius:var(--r-pill);background:var(--color-bg-card);font-weight:500;font-size:14px;white-space:nowrap;display:inline-flex;align-items:center;gap:8px}
+.tab .cnt{font-size:12px;color:var(--color-text-secondary);background:var(--color-bg-field);border-radius:var(--r-pill);padding:1px 8px}
+.tab.active{background:var(--color-text-primary);color:#fff}
+.tab.active .cnt{background:rgba(255,255,255,.18);color:#fff}
+
+/* ---------- List ---------- */
+.group{background:var(--color-bg-card);border-radius:var(--r-card);padding:8px;box-shadow:var(--shadow-card);margin-bottom:12px}
+.group-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:14px 14px 8px}
+.group-title{font-weight:700;font-size:17px}
+.group-sum{font-size:14px;color:var(--color-text-secondary)}
+.row{display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:var(--r-block);width:100%;text-align:left;position:relative;transition:background .15s}
+.row:hover{background:var(--color-bg-field)}
+.row + .row::before{content:"";position:absolute;left:72px;right:14px;top:0;height:1px;background:var(--divider)}
+.row:hover::before,.row:hover + .row::before{opacity:0}
+.logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:16px;flex:none}
+.row-main{flex:1;min-width:0}
+.row-name{font-weight:600;font-size:15px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.row-name,.row-sub{display:block}.row-name{display:flex}.row-sub{font-size:13px;color:var(--color-text-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-right{text-align:right;flex:none}
+.row-amount{font-weight:700;font-size:15px}
+.row-date{font-size:13px;color:var(--color-text-secondary)}
+.row-date.soon{color:#B26B00;font-weight:600}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:var(--r-pill);white-space:nowrap}
+.badge.trial{background:var(--color-warning-bg);color:var(--color-warning-text)}
+.badge.dup{background:var(--color-danger-bg);color:var(--color-danger)}
+.badge.inc{background:var(--color-primary-bg-subtle);color:#167A2A}
+.badge.off{background:var(--color-bg-muted);color:var(--color-text-secondary)}
+.row.is-off .logo{filter:grayscale(1);opacity:.45}
+.row.is-off .row-name,.row.is-off .row-amount{color:var(--color-text-secondary)}
+.row.is-off .row-amount{text-decoration:line-through}
+.chev{color:var(--color-text-tertiary);flex:none}
+
+/* ---------- Right column ---------- */
+.aside{position:sticky;top:88px;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--color-bg-card);border-radius:var(--r-card);padding:20px;box-shadow:var(--shadow-card)}
+.card-title{font-weight:700;font-size:17px;margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--color-text-secondary);margin-bottom:16px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal-dow{font-size:11px;color:var(--color-text-tertiary);text-align:center;font-weight:600;padding-bottom:4px}
+.cal-day{height:40px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;position:relative;background:transparent}
+.cal-day.today{background:var(--color-text-primary);color:#fff;font-weight:700}
+.cal-day.has{background:var(--color-primary-bg-subtle);color:#167A2A;font-weight:700;cursor:pointer}
+.cal-day.has.big{background:var(--color-primary);color:#fff}
+.cal-day.has:hover{outline:2px solid var(--color-primary);outline-offset:-2px}
+.cal-day.sel{outline:2px solid var(--color-text-primary)!important;outline-offset:-2px}
+.cal-day i{width:4px;height:4px;border-radius:50%;background:currentColor;margin-top:2px;opacity:.8}
+.cal-day.cal-blank{visibility:hidden}
+.cal-day.past{color:var(--color-text-tertiary)}
+.cal-list{margin-top:14px;display:flex;flex-direction:column;gap:6px}
+.cal-item{display:flex;justify-content:space-between;gap:10px;font-size:14px;background:var(--color-bg-field);border-radius:12px;padding:10px 12px}
+.cal-item span:first-child{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.setting{display:flex;align-items:center;gap:12px;padding:12px 0}
+.setting + .setting{border-top:1px solid var(--divider)}
+.setting-text{flex:1;font-size:14px}
+.setting-text b{display:block;font-weight:600;font-size:15px}
+.setting-text span{color:var(--color-text-secondary)}
+.switch{width:48px;height:28px;border-radius:var(--r-pill);background:var(--color-bg-muted);position:relative;flex:none;transition:background .2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.15);transition:transform .2s}
+.switch[aria-checked="true"]{background:var(--color-primary)}
+.switch[aria-checked="true"]::after{transform:translateX(20px)}
+.saved{background:linear-gradient(135deg,#1E9C36,#0E7E6A);color:#fff;border-radius:var(--r-card);padding:20px;position:relative;overflow:hidden}
+.saved .card-sub{color:rgba(255,255,255,.8);margin-bottom:6px}
+.saved-sum{font-size:32px;font-weight:800;letter-spacing:-.02em}
+.saved svg{position:absolute;right:-18px;bottom:-22px;width:130px;opacity:.9}
+
+/* ---------- Empty ---------- */
+.empty{background:var(--color-bg-card);border-radius:var(--r-card);padding:36px 24px;text-align:center;box-shadow:var(--shadow-card)}
+.empty svg{width:200px;height:150px;margin:0 auto 12px;display:block}
+.empty h3{font-size:20px;font-weight:700;margin-bottom:6px}
+.empty p{color:var(--color-text-secondary);max-width:360px;margin:0 auto 18px;font-size:14px}
+
+/* ---------- Overlay / sheet ---------- */
+.overlay{position:fixed;inset:0;z-index:60;background:rgba(18,19,22,.42);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .2s}
+.overlay.open{opacity:1;pointer-events:auto}
+.sheet{background:var(--color-bg-card);border-radius:32px;width:100%;max-width:480px;max-height:calc(100vh - 48px);overflow:auto;padding:24px;transform:translateY(16px);transition:transform .25s}
+.overlay.open .sheet{transform:none}
+.sheet-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.sheet-head .logo{width:56px;height:56px;border-radius:18px;font-size:20px}
+.sheet-title{font-weight:800;font-size:20px;line-height:1.2}
+.sheet-sub{font-size:14px;color:var(--color-text-secondary)}
+.sheet-x{margin-left:auto;width:36px;height:36px;border-radius:50%;background:var(--color-bg-field);display:grid;place-items:center;flex:none;align-self:flex-start}
+.kv{background:var(--color-bg-field);border-radius:var(--r-block);padding:4px 16px;margin-bottom:12px}
+.kv-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;font-size:15px}
+.kv-row + .kv-row{border-top:1px solid var(--divider)}
+.kv-row span:first-child{color:var(--color-text-secondary)}
+.kv-row span:last-child{font-weight:600;text-align:right}
+.hist-title{font-weight:700;font-size:15px;margin:16px 0 8px}
+.hist{display:flex;flex-direction:column;gap:2px;margin-bottom:16px}
+.hist div{display:flex;justify-content:space-between;font-size:14px;padding:8px 0}
+.hist div span:first-child{color:var(--color-text-secondary)}
+.sheet-actions{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.note{font-size:13px;color:var(--color-text-secondary);margin-top:12px;text-align:center}
+.confirm-ill{width:160px;height:120px;margin:4px auto 12px;display:block}
+.confirm-title{font-size:22px;font-weight:800;text-align:center;line-height:1.2;margin-bottom:8px}
+.confirm-text{text-align:center;color:#3A3D42;font-size:15px;margin-bottom:16px}
+.alt{display:flex;gap:12px;align-items:flex-start;background:var(--color-primary-bg-soft);border-radius:var(--r-block);padding:14px 16px;margin-bottom:16px;text-align:left}
+.alt b{display:block;font-size:14px}
+.alt span{font-size:13px;color:#3A3D42}
+
+/* About */
+.about h2{font-size:24px;font-weight:800;line-height:1.2;margin-bottom:6px;letter-spacing:-.01em}
+.about-over{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--color-primary);margin-bottom:8px}
+.about-block{background:var(--color-bg-field);border-radius:var(--r-block);padding:14px 16px;margin-top:10px}
+.about-block b{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-secondary);margin-bottom:4px;font-weight:600}
+.about-block p{font-size:14px}
+.about-sign{font-size:13px;color:var(--color-text-secondary);margin-top:16px;line-height:1.6}
+.about-sign a{color:var(--color-primary);font-weight:600;text-decoration:none}
+
+/* Toast */
+.toast{position:fixed;left:50%;bottom:28px;z-index:80;transform:translate(-50%,24px);opacity:0;pointer-events:none;background:#1F1F22;color:#fff;border-radius:var(--r-pill);padding:12px 12px 12px 18px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-float);transition:all .25s;max-width:calc(100vw - 32px);font-size:14px}
+.toast.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast .ok{width:24px;height:24px;border-radius:50%;background:var(--color-primary);display:grid;place-items:center;flex:none}
+.toast button{color:#7FE09A;font-weight:600;padding:6px 10px;border-radius:var(--r-pill);white-space:nowrap}
+.toast button:hover{background:rgba(255,255,255,.08)}
+
+/* Mobile tabbar */
+.tabbar{display:none}
+
+@media (max-width:1180px){
+  .layout{grid-template-columns:200px minmax(0,1fr)}
+  .aside{grid-column:2;position:static}
+}
+@media (max-width:860px){
+  .layout{grid-template-columns:minmax(0,1fr);padding:16px 16px 110px}
+  .sidenav{display:none}
+  .aside{grid-column:1}
+  .search{display:none}
+}
+@media (max-width:560px){
+  body{font-size:15px}
+  .topbar-in{height:56px;padding:0 16px;gap:10px}
+  .brand{font-size:15px}
+  .brand-dot{width:24px;height:24px}
+  .icon-btn,.avatar{display:none}
+  .about-btn{height:36px;padding:0 12px;font-size:13px}
+  .concept-tag{display:none}
+  h1{font-size:26px;margin-bottom:14px}
+  .hero{padding:20px 18px 18px;min-height:0}
+  .hero-sum{font-size:36px}
+  .hero-ill{width:170px;height:150px;right:-30px;top:-14px}
+  .hero-meta{max-width:none}
+  .hero-next{max-width:none}
+  .row{padding:12px 10px;gap:12px}
+  .row + .row::before{left:66px;right:10px}
+  .logo{width:42px;height:42px}
+  .group{padding:6px}
+  .group-head{padding:12px 10px 6px}
+  .overlay{align-items:flex-end;padding:0}
+  .sheet{border-radius:28px 28px 0 0;max-height:92vh;padding:20px 16px calc(20px + env(safe-area-inset-bottom))}
+  .banner{padding:14px}
+  .banner-ico{display:none}
+  .toast{bottom:92px;left:16px;right:16px;max-width:none;transform:translateY(24px);border-radius:20px}
+  .toast.show{transform:none}
+  .toast #toastText{flex:1}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:8px 8px calc(8px + env(safe-area-inset-bottom));justify-content:space-around}
+  .tabbar a{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--color-text-secondary);text-decoration:none;font-weight:500;min-width:60px}
+  .tabbar a.active{color:var(--color-primary)}
+  .tabbar svg{width:24px;height:24px}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><span class="brand-dot" aria-hidden="true"></span>СберБанк Онлайн <span class="concept-tag">концепт</span></div>
+    <div class="search" role="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      Поиск по приложению
+    </div>
+    <div class="top-actions">
+      <button class="about-btn" id="openAbout">О концепции</button>
+      <button class="icon-btn" aria-label="Уведомления"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F1F22" stroke-width="1.8"><path d="M6 16V11a6 6 0 1 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/></svg></button>
+      <div class="avatar" aria-hidden="true">АС</div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <nav class="sidenav" aria-label="Разделы">
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11 12 4l8 7v9H4z"/></svg>Главный</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/></svg>Платежи</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>История</a>
+    <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M4 7 15 4v3"/><circle cx="16" cy="13.5" r="1.3" fill="currentColor"/></svg>Кошелёк</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 14.5 9 21 9.5 16 14l1.5 6.5L12 17l-5.5 3.5L8 14 3 9.5 9.5 9z"/></svg>Выгода</a>
+    <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H9l-5 4z"/></svg>Чаты</a>
+  </nav>
+
+  <main>
+    <div class="crumbs"><a class="back" href="#" aria-label="Назад"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1F1F22" stroke-width="2"><path d="m15 5-7 7 7 7"/></svg></a><a href="#">Кошелёк</a><span>/</span><span>Регулярные списания</span></div>
+    <h1>Регулярные списания</h1>
+
+    <section class="hero" aria-label="Сводка">
+      <svg class="hero-ill" viewBox="0 0 300 250" aria-hidden="true">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7BD68E"/><stop offset="1" stop-color="#21A038"/></linearGradient>
+          <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#E7F5EA"/></linearGradient>
+          <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7EA6A"/><stop offset="1" stop-color="#E2B92C"/></linearGradient>
+          <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#21A038" stop-opacity=".22"/><stop offset="1" stop-color="#21A038" stop-opacity="0"/></radialGradient>
+        </defs>
+        <circle cx="170" cy="130" r="120" fill="url(#glow)"/>
+        <g transform="rotate(-8 170 130)">
+          <rect x="80" y="50" width="170" height="160" rx="32" fill="url(#g2)"/>
+          <rect x="80" y="50" width="170" height="48" rx="32" fill="url(#g1)"/>
+          <rect x="80" y="74" width="170" height="24" fill="url(#g1)"/>
+          <rect x="112" y="36" width="12" height="32" rx="6" fill="#1C8B31"/>
+          <rect x="206" y="36" width="12" height="32" rx="6" fill="#1C8B31"/>
+          <g fill="#D3EBD8">
+            <rect x="102" y="114" width="26" height="22" rx="8"/><rect x="138" y="114" width="26" height="22" rx="8"/><rect x="174" y="114" width="26" height="22" rx="8" fill="#21A038"/><rect x="210" y="114" width="26" height="22" rx="8"/>
+            <rect x="102" y="146" width="26" height="22" rx="8"/><rect x="138" y="146" width="26" height="22" rx="8" fill="#21A038"/><rect x="174" y="146" width="26" height="22" rx="8"/><rect x="210" y="146" width="26" height="22" rx="8"/>
+            <rect x="102" y="178" width="26" height="18" rx="8"/><rect x="138" y="178" width="26" height="18" rx="8"/>
+          </g>
+        </g>
+        <g>
+          <ellipse cx="88" cy="196" rx="46" ry="14" fill="#C9A21F"/>
+          <rect x="42" y="176" width="92" height="20" fill="#D9B227"/>
+          <ellipse cx="88" cy="176" rx="46" ry="14" fill="url(#g3)"/>
+          <text x="88" y="182" text-anchor="middle" font-family="Inter" font-weight="800" font-size="17" fill="#8A6A00">₽</text>
+        </g>
+      </svg>
+      <div class="hero-label">Спишется в октябре, примерно</div>
+      <div class="hero-sum num" id="monthSum">0 ₽</div>
+      <div class="hero-meta">
+        <span class="chip green" id="activeCount">0 активных</span>
+        <span class="chip" id="weekSum">За 7 дней: 0 ₽</span>
+      </div>
+      <div class="hero-next" id="heroNext"></div>
+    </section>
+
+    <div id="banners"></div>
+
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="list"></div>
+  </main>
+
+  <aside class="aside">
+    <section class="card" aria-label="Календарь списаний">
+      <div class="card-title">Календарь списаний</div>
+      <div class="card-sub">Октябрь 2026 · нажмите на день</div>
+      <div class="cal" id="cal"></div>
+      <div class="cal-list" id="calList"></div>
+    </section>
+    <section class="card" aria-label="Напоминания">
+      <div class="card-title">Напоминания</div>
+      <div class="setting">
+        <div class="setting-text"><b>За 3 дня до списания</b><span>Пуш с кнопкой «Оставить» или «Отключить»</span></div>
+        <button class="switch" role="switch" aria-checked="true" data-sw="remind" aria-label="Напоминать за 3 дня"></button>
+      </div>
+      <div class="setting">
+        <div class="setting-text"><b>Перед концом пробного периода</b><span>Когда 1 ₽ превращается в полную цену</span></div>
+        <button class="switch" role="switch" aria-checked="true" data-sw="trial" aria-label="Напоминать о конце пробного периода"></button>
+      </div>
+    </section>
+    <section class="saved" id="savedCard" hidden>
+      <div class="card-sub">Вы сэкономите в год</div>
+      <div class="saved-sum num" id="savedSum">0 ₽</div>
+      <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="44" fill="rgba(255,255,255,.18)"/><circle cx="60" cy="60" r="30" fill="rgba(255,255,255,.28)"/><path d="m46 61 10 10 20-22" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </section>
+  </aside>
+</div>
+
+<nav class="tabbar" aria-label="Нижнее меню">
+  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11 12 4l8 7v9H4z"/></svg>Главный</a>
+  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10h18"/></svg>Платежи</a>
+  <a href="#" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M4 7 15 4v3"/></svg>Кошелёк</a>
+  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>История</a>
+  <a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H9l-5 4z"/></svg>Чаты</a>
+</nav>
+
+<div class="overlay" id="overlay" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" id="sheet"></div></div>
+<div class="toast" id="toast" role="status"><span class="ok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="m5 12 5 5 9-10"/></svg></span><span id="toastText"></span><button id="toastUndo">Вернуть</button></div>
+
+<script>
+(function(){
+  var TODAY = new Date(2026, 9, 7);
+  var MONTHS = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  function d(m, day){ return new Date(2026, m, day); }
+  function fmt(n){ return Math.round(n).toLocaleString('ru-RU').replace(/,/g,' ') + ' ₽'; }
+  function fmtDate(dt){ return dt.getDate() + ' ' + MONTHS[dt.getMonth()]; }
+  function daysTo(dt){ return Math.round((dt - TODAY) / 86400000); }
+  function when(dt){
+    var n = daysTo(dt);
+    if (n === 0) return 'сегодня';
+    if (n === 1) return 'завтра';
+    if (n > 1 && n < 5) return 'через ' + n + ' дня';
+    if (n >= 5 && n <= 7) return 'через ' + n + ' дней';
+    return fmtDate(dt);
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  var items = [
+    {id:'prime', group:'sber', name:'СберПрайм', sub:'Пробный период за 1 ₽ · СберКарта ⋯4821', amount:299, period:'мес', next:d(9,10), color:'linear-gradient(135deg,#2BC14E,#0E8A7A)', letter:'П', flag:'trial', action:'renew',
+      hist:[['10 сентября','1 ₽'],['Подключено','10 сентября · при выборе категорий кэшбэка']]},
+    {id:'notif', group:'sber', name:'Уведомления по карте', sub:'СберКарта ⋯4821 · пуш и СМС', amount:99, period:'мес', next:d(9,12), color:'#7D838A', letter:'У', flag:'dup', action:'notif',
+      hist:[['12 сентября','99 ₽'],['12 августа','99 ₽'],['12 июля','99 ₽']]},
+    {id:'cloud', group:'sber', name:'Облако 100 ГБ', sub:'Сервис экосистемы · СберКарта ⋯4821', amount:149, period:'мес', next:d(9,26), color:'#1A88E1', letter:'О', action:'renew',
+      hist:[['26 сентября','149 ₽'],['26 августа','149 ₽']]},
+    {id:'kino', group:'service', name:'Кинопоток', sub:'Онлайн-кинотеатр · МИР ⋯0937', amount:399, period:'мес', next:d(9,9), color:'#5B3FD9', letter:'К', action:'block',
+      hist:[['9 сентября','399 ₽'],['9 августа','399 ₽'],['9 июля','399 ₽']]},
+    {id:'lang', group:'service', name:'Скайленд', sub:'Курсы английского · СберКарта ⋯4821', amount:1290, period:'мес', next:d(9,21), color:'#F26B1D', letter:'С', action:'block',
+      hist:[['21 сентября','1 290 ₽'],['21 августа','1 290 ₽']]},
+    {id:'fit', group:'service', name:'Фитплан', sub:'Приложение тренировок · МИР ⋯0937', amount:2490, period:'год', next:d(10,3), color:'#E5342B', letter:'Ф', action:'block', flag:'unused',
+      hist:[['3 ноября 2025','2 490 ₽']]},
+    {id:'mts', group:'auto', name:'Мобильная связь', sub:'+7 905 ••• 41 18 · автоплатёж', amount:650, period:'мес', next:d(9,15), color:'#21A038', letter:'М', action:'pause',
+      hist:[['15 сентября','650 ₽'],['15 августа','650 ₽']]},
+    {id:'net', group:'auto', name:'Домашний интернет', sub:'Договор №4417-0923 · автоплатёж', amount:790, period:'мес', next:d(9,18), color:'#0E7E6A', letter:'И', action:'pause',
+      hist:[['18 сентября','790 ₽'],['18 августа','790 ₽']]},
+    {id:'zhku', group:'auto', name:'ЖКУ по ЕПД', sub:'Лицевой счёт ••• 2210 · по счёту', amount:5870, period:'мес', next:d(9,25), color:'#9AA0A6', letter:'Ж', action:'pause', approx:true,
+      hist:[['25 сентября','5 612 ₽'],['25 августа','5 940 ₽']]}
+  ];
+  items.forEach(function(i){ i.on = true; });
+
+  var GROUPS = {sber:'Услуги Сбера', service:'Сервисы и подписки', auto:'Автоплатежи'};
+  var state = { tab:'all', dupClosed:false, trialClosed:false, selDay:null, lastOff:null };
+  var savedYear = 0;
+
+  function monthly(i){ return i.period === 'год' ? i.amount / 12 : i.amount; }
+  function active(){ return items.filter(function(i){ return i.on; }); }
+
+  /* -------- Render -------- */
+  function render(){
+    var act = active();
+    var octSum = act.filter(function(i){ return i.next.getMonth() === 9; }).reduce(function(s,i){ return s + i.amount; }, 0);
+    document.getElementById('monthSum').innerHTML = '≈ ' + fmt(octSum).replace(' ₽','') + ' <small>₽</small>';
+    var n = act.length;
+    document.getElementById('activeCount').textContent = n + ' ' + plural(n, 'активное','активных','активных');
+    var week = act.filter(function(i){ var k = daysTo(i.next); return k >= 0 && k <= 7; });
+    document.getElementById('weekSum').textContent = 'За 7 дней: ' + fmt(week.reduce(function(s,i){ return s + i.amount; }, 0));
+
+    var nxt = act.slice().sort(function(a,b){ return a.next - b.next; })[0];
+    var hn = document.getElementById('heroNext');
+    if (nxt){
+      hn.innerHTML = '<span class="logo" style="width:36px;height:36px;border-radius:12px;font-size:14px;background:' + nxt.color + '">' + nxt.letter + '</span>' +
+        '<div style="flex:1;min-width:0;font-size:14px">Ближайшее: <b>' + esc(nxt.name) + '</b>, ' + when(nxt.next) + '</div><b class="num">' + fmt(nxt.amount) + '</b>';
+      hn.style.display = '';
+    } else { hn.style.display = 'none'; }
+
+    renderBanners();
+    renderTabs();
+    renderList();
+    renderCal();
+    var sc = document.getElementById('savedCard');
+    sc.hidden = savedYear <= 0;
+    document.getElementById('savedSum').textContent = fmt(savedYear);
+  }
+
+  function plural(n, one, few, many){
+    var m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
+    return many;
+  }
+
+  function renderBanners(){
+    var html = '';
+    var prime = byId('prime'), notif = byId('notif');
+    if (!state.trialClosed && prime.on){
+      html += '<div class="banner warn">' +
+        '<div class="banner-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7A5B00" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg></div>' +
+        '<div class="banner-body"><div class="banner-title">Пробный СберПрайм закончится ' + when(prime.next) + '</div>' +
+        '<div class="banner-text">10 октября спишем 299 ₽ вместо 1 ₽. Решите сейчас, чтобы не было сюрпризов.</div>' +
+        '<div class="banner-actions"><button class="btn btn-s btn-secondary" data-act="keep">Оставить подписку</button><button class="btn btn-s btn-tint" style="background:rgba(255,255,255,.55)" data-open="prime">Отключить продление</button></div></div>' +
+        '<button class="banner-close" data-close="trial" aria-label="Скрыть">✕</button></div>';
+    }
+    if (!state.dupClosed && notif.on && prime.on){
+      html += '<div class="banner green">' +
+        '<div class="banner-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#21A038" stroke-width="2"><path d="M12 3v18M17 7.5c0-1.9-2.2-3-5-3s-5 1.1-5 3 2 2.6 5 3.2 5 1.4 5 3.3-2.2 3.5-5 3.5-5-1.2-5-3.2"/></svg></div>' +
+        '<div class="banner-body"><div class="banner-title">Вы платите дважды за уведомления</div>' +
+        '<div class="banner-text">99 ₽ в месяц за уведомления по карте ⋯4821, хотя они уже входят в СберПрайм.</div>' +
+        '<div class="banner-actions"><button class="btn btn-s btn-primary" data-act="fixdup">Сэкономить 1 188 ₽ в год</button></div></div>' +
+        '<button class="banner-close" data-close="dup" aria-label="Скрыть">✕</button></div>';
+    }
+    document.getElementById('banners').innerHTML = html;
+  }
+
+  function renderTabs(){
+    var tabs = [['all','Все'],['sber','Услуги Сбера'],['service','Сервисы'],['auto','Автоплатежи'],['off','Отключённые']];
+    document.getElementById('tabs').innerHTML = tabs.map(function(t){
+      var c = t[0] === 'all' ? active().length : t[0] === 'off' ? items.filter(function(i){ return !i.on; }).length : items.filter(function(i){ return i.on && i.group === t[0]; }).length;
+      return '<button class="tab' + (state.tab === t[0] ? ' active' : '') + '" role="tab" aria-selected="' + (state.tab === t[0]) + '" data-tab="' + t[0] + '">' + t[1] + ' <span class="cnt">' + c + '</span></button>';
+    }).join('');
+  }
+
+  function rowHtml(i){
+    var badges = '';
+    if (!i.on) badges = '<span class="badge off">Отключено</span>';
+    else if (i.flag === 'trial') badges = '<span class="badge trial">1 ₽ до 10 окт.</span>';
+    else if (i.flag === 'dup' && byId('prime').on) badges = '<span class="badge dup">Дублирует Прайм</span>';
+    else if (i.flag === 'unused') badges = '<span class="badge trial">Продление через год</span>';
+    var soon = i.on && daysTo(i.next) <= 3;
+    var dateTxt = i.on ? (i.approx ? '≈ ' : '') + when(i.next) : 'больше не спишем';
+    return '<button class="row' + (i.on ? '' : ' is-off') + '" data-open="' + i.id + '">' +
+      '<span class="logo" style="background:' + i.color + '">' + i.letter + '</span>' +
+      '<span class="row-main"><span class="row-name">' + esc(i.name) + badges + '</span><span class="row-sub">' + esc(i.sub) + '</span></span>' +
+      '<span class="row-right"><span class="row-amount num">' + fmt(i.amount) + '<span style="font-weight:500;color:var(--color-text-secondary)">/' + i.period + '</span></span><br><span class="row-date' + (soon ? ' soon' : '') + '">' + dateTxt + '</span></span>' +
+      '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></button>';
+  }
+
+  function renderList(){
+    var out = '';
+    var list = document.getElementById('list');
+    if (state.tab === 'off'){
+      var off = items.filter(function(i){ return !i.on; });
+      if (!off.length){ list.innerHTML = emptyHtml('Пока ничего не отключали', 'Здесь появятся подписки и автоплатежи, которые вы отключили. Их можно вернуть в один тап.', 'Ко всем списаниям', 'all'); return; }
+      list.innerHTML = '<div class="group"><div class="group-head"><span class="group-title">Отключённые</span><span class="group-sum">Можно вернуть</span></div>' + off.map(rowHtml).join('') + '</div>';
+      return;
+    }
+    var groups = state.tab === 'all' ? ['sber','service','auto'] : [state.tab];
+    groups.forEach(function(g){
+      var gi = items.filter(function(i){ return i.on && i.group === g; }).sort(function(a,b){ return a.next - b.next; });
+      if (!gi.length) return;
+      var sum = gi.reduce(function(s,i){ return s + monthly(i); }, 0);
+      out += '<div class="group"><div class="group-head"><span class="group-title">' + GROUPS[g] + '</span><span class="group-sum num">' + fmt(sum) + ' в мес.</span></div>' + gi.map(rowHtml).join('') + '</div>';
+    });
+    if (!out){
+      out = emptyHtml('Регулярных списаний нет', 'В этой категории ничего не спишется. Новые подписки появятся здесь сразу после оформления, мы предупредим за 3 дня до оплаты.', 'Посмотреть все', 'all');
+    }
+    list.innerHTML = out;
+  }
+
+  function emptyHtml(t, p, btn, tab){
+    return '<div class="empty"><svg viewBox="0 0 200 150" aria-hidden="true"><defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9BE0AA"/><stop offset="1" stop-color="#21A038"/></linearGradient></defs>' +
+      '<ellipse cx="100" cy="135" rx="70" ry="8" fill="#E9EBEE"/><rect x="45" y="22" width="110" height="104" rx="26" fill="#F2F3F5"/><rect x="45" y="22" width="110" height="30" rx="26" fill="url(#eg)"/><rect x="45" y="38" width="110" height="14" fill="url(#eg)"/>' +
+      '<circle cx="100" cy="88" r="22" fill="#fff"/><path d="m90 88 7 7 14-15" fill="none" stroke="#21A038" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+      '<h3>' + t + '</h3><p>' + p + '</p><button class="btn btn-primary" data-tab="' + tab + '">' + btn + '</button></div>';
+  }
+
+  function renderCal(){
+    var dows = ['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
+    var html = dows.map(function(x){ return '<div class="cal-dow">' + x + '</div>'; }).join('');
+    var first = new Date(2026, 9, 1);
+    var shift = (first.getDay() + 6) % 7;
+    for (var s = 0; s < shift; s++) html += '<div class="cal-day cal-blank"></div>';
+    var act = active();
+    for (var day = 1; day <= 31; day++){
+      var dt = new Date(2026, 9, day);
+      var ds = act.filter(function(i){ return i.next.getTime() === dt.getTime(); });
+      var sum = ds.reduce(function(a,i){ return a + i.amount; }, 0);
+      var cls = 'cal-day';
+      if (day === 7) cls += ' today';
+      else if (ds.length) cls += ' has' + (sum >= 1000 ? ' big' : '');
+      else if (day < 7) cls += ' past';
+      if (state.selDay === day) cls += ' sel';
+      html += '<div class="' + cls + '"' + (ds.length ? ' data-day="' + day + '" role="button" tabindex="0" aria-label="' + day + ' октября: ' + fmt(sum) + '"' : '') + '>' + day + (ds.length && day !== 7 ? '<i></i>' : '') + '</div>';
+    }
+    document.getElementById('cal').innerHTML = html;
+    var list = act.filter(function(i){ return state.selDay ? i.next.getMonth() === 9 && i.next.getDate() === state.selDay : daysTo(i.next) >= 0 && daysTo(i.next) <= 7; })
+      .sort(function(a,b){ return a.next - b.next; });
+    var head = state.selDay ? state.selDay + ' октября' : 'Ближайшие 7 дней';
+    document.getElementById('calList').innerHTML = '<div style="font-size:13px;color:var(--color-text-secondary);font-weight:600">' + head + '</div>' +
+      (list.length ? list.map(function(i){ return '<div class="cal-item"><span>' + (state.selDay ? '' : i.next.getDate() + ' окт. · ') + esc(i.name) + '</span><b class="num">' + fmt(i.amount) + '</b></div>'; }).join('')
+        : '<div class="cal-item"><span>Списаний нет</span><b></b></div>');
+  }
+
+  function byId(id){ for (var k = 0; k < items.length; k++) if (items[k].id === id) return items[k]; }
+
+  /* -------- Sheets -------- */
+  var overlay = document.getElementById('overlay'), sheet = document.getElementById('sheet');
+  function openSheet(html){ sheet.innerHTML = html; overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); sheet.scrollTop = 0; }
+  function closeSheet(){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); }
+
+  var ACT = {
+    renew:{btn:'Отключить автопродление', title:'Отключить автопродление?', text:function(i){ return 'Доступ сохранится до ' + fmtDate(i.next) + '. Потом ' + i.name + ' не продлится и больше ничего не спишем.'; }, toast:'Автопродление отключено'},
+    notif:{btn:'Отключить платные уведомления', title:'Перейти на уведомления из СберПрайм?', text:function(){ return 'Пуш о каждой операции останется, просто перестанем брать за него 99 ₽ отдельно. Бесплатные уведомления действуют, пока активен СберПрайм.'; }, toast:'Платные уведомления отключены'},
+    block:{btn:'Запретить списания', title:'Запретить списания?', text:function(i){ return 'Сервис ' + i.name + ' больше не сможет списывать деньги с карты. Сам аккаунт в сервисе останется, его можно удалить отдельно.'; }, toast:'Списания запрещены'},
+    pause:{btn:'Приостановить автоплатёж', title:'Приостановить автоплатёж?', text:function(i){ return 'Следующий платёж ' + fmtDate(i.next) + ' не пройдёт автоматически. Не забудьте оплатить вручную, чтобы не было долга.'; }, toast:'Автоплатёж приостановлен'}
+  };
+
+  function openDetail(id){
+    var i = byId(id); var a = ACT[i.action];
+    var info = '';
+    if (i.flag === 'trial' && i.on) info = '<div class="alt" style="background:var(--color-warning-bg)"><span style="font-size:20px">⏳</span><div><b>Пробный период за 1 ₽ до ' + fmtDate(i.next) + '</b><span>Дальше 299 ₽ в месяц. Отключите продление сейчас, и Прайм будет работать до конца пробного периода.</span></div></div>';
+    if (i.flag === 'dup' && i.on && byId('prime').on) info = '<div class="alt"><span style="font-size:20px">💡</span><div><b>Уже входит в СберПрайм</b><span>Вы платите 99 ₽ в месяц за то, что получаете бесплатно. Экономия 1 188 ₽ в год.</span></div></div>';
+    if (i.flag === 'unused' && i.on) info = '<div class="alt" style="background:var(--color-info-bg)"><span style="font-size:20px">📅</span><div><b>Годовая подписка</b><span>Спишем 2 490 ₽ ' + fmtDate(i.next) + '. Напомним за 3 дня, чтобы вы успели решить.</span></div></div>';
+    var main = i.on
+      ? '<button class="btn btn-danger btn-block" data-confirm="' + i.id + '">' + a.btn + '</button>' + (i.flag === 'trial' ? '<button class="btn btn-tint btn-block" data-act="keep">Оставить подписку</button>' : '<button class="btn btn-tint btn-block" data-toast="Карта для оплаты: выбор появится в следующем шаге">Изменить карту</button>')
+      : '<button class="btn btn-primary btn-block" data-restore="' + i.id + '">Вернуть</button>';
+    openSheet(
+      '<div class="sheet-head"><span class="logo" style="background:' + i.color + '">' + i.letter + '</span><div><div class="sheet-title">' + esc(i.name) + '</div><div class="sheet-sub">' + GROUPS[i.group] + '</div></div><button class="sheet-x" data-close-sheet aria-label="Закрыть">✕</button></div>' +
+      info +
+      '<div class="kv">' +
+        '<div class="kv-row"><span>Сумма</span><span class="num">' + (i.approx ? '≈ ' : '') + fmt(i.amount) + ' / ' + i.period + '</span></div>' +
+        '<div class="kv-row"><span>' + (i.on ? 'Следующее списание' : 'Статус') + '</span><span>' + (i.on ? fmtDate(i.next) : 'Отключено') + '</span></div>' +
+        '<div class="kv-row"><span>Откуда</span><span>' + esc(i.sub.split(' · ').slice(-1)[0]) + '</span></div>' +
+      '</div>' +
+      '<div class="hist-title">История</div><div class="hist">' + i.hist.map(function(h){ return '<div><span>' + h[0] + '</span><span class="num">' + h[1] + '</span></div>'; }).join('') + '</div>' +
+      '<div class="sheet-actions">' + main + '</div>'
+    );
+  }
+
+  function openConfirm(id){
+    var i = byId(id); var a = ACT[i.action];
+    var alt = '';
+    if (i.id === 'prime') alt = '<div class="alt"><span style="font-size:20px">🌿</span><div><b>Можно сэкономить и без отказа от Прайма</b><span>В Прайм уже входят бесплатные уведомления. Отключите платные за 99 ₽, и подписка фактически обойдётся в 200 ₽.</span></div></div>';
+    openSheet(
+      '<div style="display:flex;justify-content:flex-end"><button class="sheet-x" data-close-sheet aria-label="Закрыть">✕</button></div>' +
+      '<svg class="confirm-ill" viewBox="0 0 160 120" aria-hidden="true"><defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9BE0AA"/><stop offset="1" stop-color="#21A038"/></linearGradient></defs><ellipse cx="80" cy="112" rx="56" ry="6" fill="#E9EBEE"/><rect x="34" y="20" width="92" height="84" rx="24" fill="#F2F3F5"/><rect x="34" y="20" width="92" height="26" rx="24" fill="url(#cg)"/><rect x="34" y="34" width="92" height="12" fill="url(#cg)"/><circle cx="80" cy="74" r="18" fill="#fff"/><path d="M71 74h18" stroke="#E5342B" stroke-width="6" stroke-linecap="round"/></svg>' +
+      '<div class="confirm-title">' + a.title + '</div>' +
+      '<div class="confirm-text">' + esc(a.text(i)) + '</div>' + alt +
+      '<div class="sheet-actions"><button class="btn btn-danger btn-block" data-do-off="' + i.id + '">Да, ' + a.btn.toLowerCase() + '</button><button class="btn btn-tint btn-block" data-open="' + i.id + '">Назад</button></div>' +
+      '<div class="note">Действие можно отменить в разделе «Отключённые»</div>'
+    );
+  }
+
+  /* -------- Actions -------- */
+  var toastEl = document.getElementById('toast'), toastTimer;
+  function toast(text, undoId){
+    document.getElementById('toastText').textContent = text;
+    var u = document.getElementById('toastUndo');
+    u.style.display = undoId ? '' : 'none';
+    u.dataset.id = undoId || '';
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 4200);
+  }
+
+  function turnOff(id){
+    var i = byId(id); i.on = false;
+    savedYear += i.period === 'год' ? i.amount : i.amount * 12;
+    closeSheet(); render();
+    toast(ACT[i.action].toast + ': ' + i.name, id);
+  }
+  function restore(id){
+    var i = byId(id); if (i.on) return;
+    i.on = true;
+    savedYear -= i.period === 'год' ? i.amount : i.amount * 12;
+    closeSheet(); render();
+    toast(i.name + ' снова активно');
+  }
+
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('[data-tab],[data-open],[data-confirm],[data-do-off],[data-restore],[data-close],[data-close-sheet],[data-act],[data-day],[data-sw],[data-toast]');
+    if (!t) return;
+    if (t.dataset.tab){ state.tab = t.dataset.tab; renderTabs(); renderList(); return; }
+    if (t.dataset.open){ openDetail(t.dataset.open); return; }
+    if (t.dataset.confirm){ openConfirm(t.dataset.confirm); return; }
+    if (t.dataset.doOff){ turnOff(t.dataset.doOff); return; }
+    if (t.dataset.restore){ restore(t.dataset.restore); return; }
+    if (t.dataset.close){ state[t.dataset.close === 'dup' ? 'dupClosed' : 'trialClosed'] = true; renderBanners(); return; }
+    if (t.hasAttribute('data-close-sheet')){ closeSheet(); return; }
+    if (t.dataset.act === 'keep'){ state.trialClosed = true; closeSheet(); render(); toast('СберПрайм остаётся. Напомним за 3 дня до следующего списания'); return; }
+    if (t.dataset.act === 'fixdup'){ openConfirm('notif'); return; }
+    if (t.dataset.day){ var dd = +t.dataset.day; state.selDay = state.selDay === dd ? null : dd; renderCal(); return; }
+    if (t.dataset.sw){ var on = t.getAttribute('aria-checked') !== 'true'; t.setAttribute('aria-checked', String(on)); toast(on ? 'Напоминания включены' : 'Напоминания выключены'); return; }
+    if (t.dataset.toast){ toast(t.dataset.toast); return; }
+  });
+  document.getElementById('cal').addEventListener('keydown', function(e){ if ((e.key === 'Enter' || e.key === ' ') && e.target.dataset.day){ e.preventDefault(); e.target.click(); } });
+  document.getElementById('toastUndo').addEventListener('click', function(){ restore(this.dataset.id); });
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeSheet(); });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeSheet(); });
+
+  /* -------- About -------- */
+  function openAbout(){
+    openSheet(
+      '<div class="about"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px"><div><div class="about-over">Концепт · СберБанк Онлайн</div><h2>Все регулярные списания в одном месте</h2></div><button class="sheet-x" data-close-sheet aria-label="Закрыть">✕</button></div>' +
+      '<div class="about-block"><b>Проблема</b><p>Платные услуги разнесены по разным разделам: СберПрайм в Сбер ID, платные уведомления в настройках карты, привязки к сервисам в Кошельке, автоплатежи отдельно. Человек не видит общей суммы и даты списания, узнаёт о нём постфактум и идёт в поддержку.</p></div>' +
+      '<div class="about-block"><b>Гипотеза</b><p>Если собрать всё в одном экране с суммой в месяц, датой ближайшего списания и отключением в 1 тап, станет меньше обращений и претензий по «непонятным списаниям», а подписчики будут реже уходить «назло».</p></div>' +
+      '<div class="about-block"><b>Решение</b><p>Экран в Кошельке: сводка, календарь, напоминание до конца пробного периода, подсказка о дублях (уведомления при активном Прайм) и понятное отключение с возможностью вернуть.</p></div>' +
+      '<div class="about-block"><b>Как измерить</b><p>A/B-тест: доля обращений в поддержку по теме списаний, число оспариваний, удержание СберПрайм после пробного периода, CSAT экрана.</p></div>' +
+      '<div class="about-sign">Дизайн: <b>Максим Кощеев</b>, UX/UI и продуктовый дизайнер · <a href="https://portfoliomaksim.framer.website/" target="_blank" rel="noopener">портфолио</a> · <a href="https://t.me/maksim_koshcheev" target="_blank" rel="noopener">@maksim_koshcheev</a><br>Концепт не связан с ПАО Сбербанк, данные вымышлены.</div>' +
+      '<div class="sheet-actions" style="margin-top:16px"><button class="btn btn-primary btn-block" data-close-sheet>Смотреть прототип</button></div></div>'
+    );
+  }
+  document.getElementById('openAbout').addEventListener('click', openAbout);
+
+  render();
+  openAbout();
+})();
+</script>
+</body>
+</html>
